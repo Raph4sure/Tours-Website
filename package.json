@@ -1,0 +1,22 @@
+{
+  "name": "tours",
+  "version": "1.0.0",
+  "description": "Using nodejs for Backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raph4sure/Tours-Website.git"
+  },
+  "author": "Gbenga Raphael",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raph4sure/Tours-Website/issues"
+  },
+  "homepage": "https://github.com/Raph4sure/Tours-Website#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

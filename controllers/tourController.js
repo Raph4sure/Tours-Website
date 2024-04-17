@@ -6,6 +6,7 @@ const tours = JSON.parse(
 
 exports.checkID = (req, res, next, val) => {
   console.log(`Tour id is: ${val}`);
+
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -39,7 +40,6 @@ exports.getTour = (req, res) => {
 
 exports.createTour = (req, res) => {
   // console.log(req.body);
-
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 

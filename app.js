@@ -141,10 +141,10 @@ app.use(express.json());
 
 // CREATING A MIDDLEWARE
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   console.log('Just testing this middleware');
   next();
-});
+}); */
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
@@ -177,7 +177,7 @@ app.delete('/api/v1/tours/:id', deleteTour); */
 // USERS ROUTES
 
 app.use('/api/v1/tours', tourRouter);
-app.use('/api/v1/users', userRouter); // Mounting Router
+app.use('/api/v1/users', userRouter); 
 
 
 module.exports = app;

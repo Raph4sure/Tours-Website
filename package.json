@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Raph4sure/Tours-Website#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "morgan": "^1.10.0"
   }
 }

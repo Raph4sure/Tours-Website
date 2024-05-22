@@ -130,14 +130,22 @@ app.listen(port, () => {
 // Refactoring my code
 
 const express = require('express');
+
 const morgan = require('morgan');
 
 const app = express();
 
 // MIDDLEWARES
-app.use(morgan('dev'));
+// console.log(process.env.NODE_ENV);
+
+
+if ((process.env.NODE_ENV = 'development')) {
+  app.use(morgan('dev'));
+}
 
 app.use(express.json());
+
+app.use(express.static(`${__dirname}/public`)); //serving static files
 
 // CREATING A MIDDLEWARE
 
@@ -177,7 +185,6 @@ app.delete('/api/v1/tours/:id', deleteTour); */
 // USERS ROUTES
 
 app.use('/api/v1/tours', tourRouter);
-app.use('/api/v1/users', userRouter); 
-
+app.use('/api/v1/users', userRouter);
 
 module.exports = app;

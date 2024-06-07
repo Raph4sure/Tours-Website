@@ -1,7 +1,7 @@
 // const fs = require('fs');
 
 const Tour = require('./../models/tourModels');
-const APIFeatures = require('./utils/apiFeatures');
+const APIFeatures = require('./../utils/apiFeatures');
 exports.aliasToptours = (req, res, next) => {
   req.query.limit = '5';
   req.query.sort = '-ratingsAverage, price';

@@ -1,65 +1,53 @@
-// Refactoring my code
-
 const express = require('express');
-
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const AppError = require('./utils/appError');
+const globalErrorHandler = require('./controllers/errorController');
+const tourRouter = require('./routes/tourRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// MIDDLEWARES
-// console.log(process.env.NODE_ENV);
+// 1) GLOBAL MIDDLEWARES
+// Set security HTTP headers
+app.use(helmet());
 
-if ((process.env.NODE_ENV = 'development')) {
+// Development logging
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use(express.json());
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 120,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour'
+});
+app.use('/api', limiter);
 
-app.use(express.static(`${__dirname}/public`)); //serving static files
+// Body parser, reading data from body into req.body
+app.use(express.json({ limit: '10kb' }));
 
-// CREATING A MIDDLEWARE
+// Serving static files
+app.use(express.static(`${__dirname}/public`));
 
+
+// To Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  // console.log(req.headers);
   next();
 });
-///////////////////////////////////////////////////////
 
-// ROUTE HANDLERS
-const tourRouter = require('./routes/tourRoutes');
-
-// ROUTE HANDLER (USER)
-const userRouter = require('./routes/userRoutes');
-
-// ROUTES
-
-// USERS ROUTES
-
+// 3) ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {
-  // res.status(404).json({
-  //   status: 'fail',
-  //   message:`Unable to  find ${req.originalUrl} on this server!`,
-  // });
-
-  const err = new Error(`Unable to  find ${req.originalUrl} on this server!`);
-  err.status = 'fail';
-  err.statusCode = 404;
-
-  next(err);
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-app.use((err, req, res, next) => {
-  console.log(err.stack);
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-});
+app.use(globalErrorHandler);
 
 module.exports = app;

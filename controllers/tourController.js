@@ -1,5 +1,4 @@
 const Tour = require('./../models/tourModel');
-const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
@@ -11,7 +10,8 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
+exports.getAllTours = factory.getAll(Tour);
+/* exports.getAllTours = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Tour.find(), req.query)
     .filter()
     .sort()
@@ -27,9 +27,11 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
       tours
     }
   });
-});
+}); */
 
-exports.getTour = catchAsync(async (req, res, next) => {
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+
+/* exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id).populate('reviews');
   // Tour.findOne({ _id: req.params.id })
 
@@ -43,7 +45,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
       tour
     }
   });
-});
+}); */
 
 exports.createTour = factory.createOne(Tour);
 /* exports.createTour = catchAsync(async (req, res, next) => {
@@ -165,6 +167,39 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       plan
+    }
+  });
+});
+
+/* // tours-within/233/center/-40,45/unit/miles
+router.route('/tours-within/:distance/center/:latlng/unit/:unit' */
+
+exports.getToursWithin = catchAsync(async (req, res, next) => {
+  const { distance, latlng, unit } = req.params;
+  const [lat, lng] = latlng.split(',');
+
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1;
+
+  if (!lat || !lng) {
+    next(
+      new AppError(
+        'Please provide latitude and logitude in the format lat,lng',
+        400
+      )
+    );
+  }
+
+  // console.log(distance, lat, lng, unit);
+
+  const tours = await Tour.find({
+    startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: tours.length, 
+    data: {
+      data: tours
     }
   });
 });

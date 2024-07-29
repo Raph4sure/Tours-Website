@@ -5,8 +5,14 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js",
+    "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "start:browser-sync": "node browser-sync.js",
+    "start:all": "npm-run-all start:dev start:browser-sync",
+    "livereload": "node livereload.js",
+    "watch": "nodemon --ext js,pug --ignore public",
+    "dev": "node browser-sync.js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +42,8 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "connect-livereload": "^0.6.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
@@ -44,6 +52,9 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.12.4",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.1.4",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.17.0"
   },
   "engines": {

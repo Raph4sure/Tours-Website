@@ -1,12 +1,14 @@
 doctype html
 html 
-    head 
-        meta(charset='UTF-8')
-        meta(name='viewport' content='width=device-width,initial-scale=1')
-        link(href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet")
-        link(rel="stylesheet" href="/css/style.css")
-        link(rel="stylesheet" type='image/png' href="/img/favicon.png")
-        title Natours | #{title}
+    head
+        block head
+            meta(charset='UTF-8')
+            meta(http-equiv="Content-Security-Policy", content="default-src \'self\'; script-src \'self\' https://api.mapbox.com; style-src \'self\' https://api.mapbox.com;")
+            meta(name='viewport' content='width=device-width,initial-scale=1')
+            link(href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet")
+            link(rel="stylesheet" href="/css/style.css")
+            link(rel="stylesheet" type='image/png' href="/img/favicon.png")
+            title Natours | #{title}
 
 
     body
@@ -17,11 +19,37 @@ html
         block content 
             h1 This is a block content
 
-    // FOOTER
-    include _footer
+        // FOOTER
+        include _footer
+
+        script(src='/js/mapbox.js')
 
 
 
+//- doctype html
+//- html 
+//-     head
+//-         block head
+//-             meta(charset='UTF-8')
+//-             meta(http-equiv='Content-Security-Policy' content="default-src 'self'; script-src 'self' https://api.mapbox.com; style-src 'self' https://api.mapbox.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;")
+//-             meta(name='viewport' content='width=device-width,initial-scale=1')
+//-             link(href="https://fonts.googleapis.com/css?family=Lato:300,300i,700" rel="stylesheet")
+//-             link(rel="stylesheet" href="/css/style.css")
+//-             link(rel="icon" type='image/png' href="/img/favicon.png")
+//-             title Natours | #{title}
+
+//-     body
+//-         // HEADER
+//-         include _header
+
+//-         // CONTENT
+//-         block content 
+//-             h1 This is a block content
+
+//-         // FOOTER
+//-         include _footer
+
+//-         script(src='/js/mapbox.js')
 
 
 

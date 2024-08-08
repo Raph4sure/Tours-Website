@@ -14,6 +14,8 @@ const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 
+
+const { contentSecurityPolicy } = require('helmet');
 // const livereload = require('livereload');
 // const connectLivereload = require('connect-livereload');
 
@@ -48,6 +50,7 @@ const app = express();
 // app.use(connectLivereload());
 
 // using PUG as Template engine
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -58,6 +61,20 @@ app.use(express.static(publicDirectory));
 
 // Set security HTTP headers
 app.use(helmet());
+app.use(
+  contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'https://api.mapbox.com', 'blob:', "'self'"],
+      connectSrc: [
+        "'self'",
+        'https://api.mapbox.com',
+        'https://events.mapbox.com'
+      ]
+    }
+  })
+);
+
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -108,6 +125,16 @@ app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
+
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     'Content-Security-Policy',
+//     "script-src  'self' api.mapbox.com",
+//     "script-src-elem 'self' api.mapbox.com"
+//   );
+//   next();
+// });
+
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));

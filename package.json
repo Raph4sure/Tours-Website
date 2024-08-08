@@ -11,6 +11,8 @@
     "start:browser-sync": "node browser-sync.js",
     "start:all": "npm-run-all start:dev start:browser-sync",
     "livereload": "node livereload.js",
+    "watch:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
+    "build:js": "parcel watch ./public/js/index.js --out-dir ./public/js --out-file bundle.js",
     "watch": "nodemon --ext js,pug --ignore public",
     "dev": "node browser-sync.js"
   },

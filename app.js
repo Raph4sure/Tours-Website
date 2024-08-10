@@ -60,20 +60,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(publicDirectory));
 
 // Set security HTTP headers
-app.use(helmet());
-app.use(
-  contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'https://api.mapbox.com', 'blob:', "'self'"],
-      connectSrc: [
-        "'self'",
-        'https://api.mapbox.com',
-        'https://events.mapbox.com'
-      ]
-    }
-  })
-);
+// app.use(helmet());
+// app.use(
+//   contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", 'https://api.mapbox.com', 'blob:', "'self'"],
+//       connectSrc: [
+//         "'self'",
+//         'https://api.mapbox.com',
+//         'https://events.mapbox.com'
+//       ]
+//     }
+//   })
+// );
+app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }));
 
 
 // Development logging

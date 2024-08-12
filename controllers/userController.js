@@ -1,7 +1,12 @@
+const multer = require('multer');
 const User = require('./../models/userModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
 const factory = require('./handlerFactory');
+
+const upload = multer({ dest: 'public/img/users' });
+
+exports.uploadUserPhoto = upload.single('photo');
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -33,8 +38,8 @@ exports.getMe = (req, res, next) => {
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data i.e. if user is trying to update or change password.
 
-console.log(req.file);
-console.log(req.body);
+  console.log(req.file);
+  console.log(req.body);
 
   if (req.body.password || req.body.passwordConfirm) {
     return next(
